@@ -4,7 +4,7 @@ import "slices"
 
 var Admins []string
 
-func isAdmin(user string) bool {
+func IsAdmin(user string) bool {
 	if slices.Contains(Admins, user) {
 		return true
 	}
