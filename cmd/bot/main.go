@@ -1,6 +1,7 @@
 package main
 
 import (
+	"RushBananaBet/internal/user"
 	"RushBananaBet/pkg/logger"
 	"os"
 
@@ -20,6 +21,12 @@ func init() {
 	if err != nil {
 		logger.Fatal("Cant unmarshal data from config", "", "", "main-init()", err)
 	}
+
+	admins, ok := initDataMap["admins"]
+	if !ok {
+		logger.Fatal("Field 'admins' not found", "", "", "main-init()", err)
+	}
+	user.Admins = admins.([]string)
 }
 
 func main() {
