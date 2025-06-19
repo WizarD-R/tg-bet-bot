@@ -14,10 +14,10 @@ import (
 
 var logger *logrus.Logger
 
-func InitLogger(level logrus.Level, formatProduction bool) {
+func InitLogger(level int, formatProduction bool) {
 	logger = logrus.New()
 
-	logger.SetLevel(level)
+	logger.SetLevel(logrus.Level(level))
 
 	if formatProduction {
 		logger.SetFormatter(&logrus.JSONFormatter{})
