@@ -12,26 +12,25 @@ import (
 // DebugLevel 5
 // TraceLevel 6
 
-type Logger struct {
-	logger *logrus.Logger
-}
+var logger *logrus.Logger
 
-func NewLogger(level logrus.Level) Logger {
-	logger := logrus.New()
+func InitLogger(level logrus.Level, formatProduction bool) {
+	logger = logrus.New()
 
 	logger.SetLevel(level)
 
-	logger.SetFormatter(&logrus.TextFormatter{
-		DisableColors: false,
-		FullTimestamp: true,
-	})
-	return Logger{
-		logger: logger,
+	if formatProduction {
+		logger.SetFormatter(&logrus.JSONFormatter{})
+	} else {
+		logger.SetFormatter(&logrus.TextFormatter{
+			DisableColors: false,
+			FullTimestamp: true,
+		})
 	}
 }
 
-func (l *Logger) Fatal(textMessage string, user string, additionalTextMessage string, location string, err error) {
-	l.logger.WithFields(logrus.Fields{
+func Fatal(textMessage string, user string, additionalTextMessage string, location string, err error) {
+	logger.WithFields(logrus.Fields{
 		"user":     user,
 		"text":     additionalTextMessage,
 		"location": location,
@@ -39,8 +38,8 @@ func (l *Logger) Fatal(textMessage string, user string, additionalTextMessage st
 	}).Fatal()
 }
 
-func (l *Logger) Error(textMessage string, user string, additionalTextMessage string, location string, err error) {
-	l.logger.WithFields(logrus.Fields{
+func Error(textMessage string, user string, additionalTextMessage string, location string, err error) {
+	logger.WithFields(logrus.Fields{
 		"user":     user,
 		"text":     additionalTextMessage,
 		"location": location,
@@ -48,8 +47,8 @@ func (l *Logger) Error(textMessage string, user string, additionalTextMessage st
 	}).Error()
 }
 
-func (l *Logger) Warn(textMessage string, user string, additionalTextMessage string, location string, err error) {
-	l.logger.WithFields(logrus.Fields{
+func Warn(textMessage string, user string, additionalTextMessage string, location string, err error) {
+	logger.WithFields(logrus.Fields{
 		"user":     user,
 		"text":     additionalTextMessage,
 		"location": location,
@@ -57,8 +56,8 @@ func (l *Logger) Warn(textMessage string, user string, additionalTextMessage str
 	}).Warn()
 }
 
-func (l *Logger) Info(textMessage string, user string, additionalTextMessage string, location string, err error) {
-	l.logger.WithFields(logrus.Fields{
+func Info(textMessage string, user string, additionalTextMessage string, location string, err error) {
+	logger.WithFields(logrus.Fields{
 		"user":     user,
 		"text":     additionalTextMessage,
 		"location": location,
@@ -66,8 +65,8 @@ func (l *Logger) Info(textMessage string, user string, additionalTextMessage str
 	}).Info()
 }
 
-func (l *Logger) Debug(textMessage string, user string, additionalTextMessage string, location string, err error) {
-	l.logger.WithFields(logrus.Fields{
+func Debug(textMessage string, user string, additionalTextMessage string, location string, err error) {
+	logger.WithFields(logrus.Fields{
 		"user":     user,
 		"text":     additionalTextMessage,
 		"location": location,
