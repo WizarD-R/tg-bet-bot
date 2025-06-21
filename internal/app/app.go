@@ -11,7 +11,7 @@ import (
 
 type Bot struct {
 	bot     *tgbotapi.BotAPI
-	handler handler.Handler
+	handler *handler.Handler
 }
 
 func (b *Bot) Start(stop chan os.Signal) {
@@ -40,7 +40,7 @@ func (b *Bot) RouteUpdate(update tgbotapi.Update) {
 	if update.Message != nil {
 		switch {
 		case update.Message.Text == "/start":
-			b.handler.HandlerStart()
+			handler.Start()
 			// msg := handlers.HandleStart(update.Message)
 			// bot.Send(msg)
 			// // другие команды...
@@ -58,7 +58,7 @@ func (b *Bot) RouteUpdate(update tgbotapi.Update) {
 	}
 }
 
-func NewBot(botToken string, handler handler.Handler) Bot {
+func NewBot(botToken string, handler *handler.Handler) Bot {
 	bot, err := tgbotapi.NewBotAPI(botToken)
 	if err != nil {
 		logger.Fatal("Error creating newBot", "", "", "main-main()", err)
