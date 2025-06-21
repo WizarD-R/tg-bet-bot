@@ -12,5 +12,3 @@ func NewService(repositories Repositories) *Services {
 		Repositories: repositories,
 	}
 }
-
-func 

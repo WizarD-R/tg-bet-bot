@@ -2,10 +2,10 @@ package main
 
 import (
 	"RushBananaBet/internal/app"
-	"RushBananaBet/internal/handler"
-	user "RushBananaBet/internal/model"
-	"RushBananaBet/internal/repository"
-	"RushBananaBet/internal/service"
+	handler "RushBananaBet/internal/handlers"
+	user "RushBananaBet/internal/models"
+	repositories "RushBananaBet/internal/repositories"
+	services "RushBananaBet/internal/services"
 	"RushBananaBet/pkg/logger"
 	"os"
 	"os/signal"
@@ -43,10 +43,10 @@ func main() {
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
-	repositories := repository.NewRepository()
-	services := service.NewService(repositories)
+	repositories := repositories.NewRepository()
+	services := services.NewService(repositories)
 	handlers := handler.NewHandler(services)
 
-	bot := app.NewBot(initData.BotToken, handlers)
-	bot.Start(stop)
+	botApp := app.NewBotApp(initData.BotToken, handlers)
+	botApp.Start(stop, handlers)
 }
